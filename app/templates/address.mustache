@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+     <meta charset="utf-8">
+     <meta name="description" content="btcsigner.com">
+     <meta name="author" content="Valerio Vaccaro">
+     <link rel="icon" href="">
+     <title>₿TC Signer</title>
+     <link href="/static/bootstrap.min.css" rel="stylesheet">
+     <link href="/static/local.css" rel="stylesheet">
+   </head>
+   <body>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container">
+           <div class="navbar-header">
+              <a class="navbar-brand" href="/">Home</a>
+              <a class="navbar-brand" href="/create">Create</a>
+              <a class="navbar-brand" href="/list">List</a>
+              <a class="navbar-brand" href="/sign">Sign</a>
+              <a class="navbar-brand" href="/about">Credits</a>
+           </div>
+         </div>
+      </nav>
+      <div class="container-fluid">
+         <br/><br/><br/><br/>
+         <div id="sl">
+            <br/><br/>
+            <div class="well">
+
+              <h3>{{name}} - {{multisig_address}}</h3>
+              <p>This address was create at {{timestamp}} from my PubKey {{my_pubkey}} and client PubKey {{your_pubkey}}.</p>
+              <p>You can check this address with the command </br>
+               <code>bitcoin-cli addmultisigaddress 2 ["{{my_pubkey}}", "{{your_pubkey}}"]</code></br>
+               where {{my_pubkey}} is a PubKey associated to my node, {{your_pubkey}} is the PubKey generated with client node.</p>
+              <p>You can also import the multisign address {{multisig_address}} with the command
+               </br><code>bitcoin-cli importaddress {{multisig_address}} "" false</code></p>
+
+              <table class="table table-striped">
+              <thead>
+                 <tr>
+                   <th scope="col"></th>
+                   <th scope="col">Confirmed</th>
+                   <th scope="col">In mempool</th>
+                </tr>
+              </thead>
+              <tbody>
+                 <tr>
+                   <td>Receiving tx counter</td>
+                   <td>{{stats.chain_stats.funded_txo_count}}</td>
+                   <td>{{stats.mempool_stats.funded_txo_count}}</td>
+                 </tr>
+                 <tr>
+                   <td>Spending tx counter</td>
+                   <td>{{stats.chain_stats.spent_txo_count}}</td>
+                   <td>{{stats.mempool_stats.spent_txo_count}}</td>
+                 </tr>
+                 <tr>
+                   <td>Receiving tx amount (in sat)</td>
+                   <td>{{stats.chain_stats.funded_txo_sum}}</td>
+                   <td>{{stats.mempool_stats.funded_txo_sum}}</td>
+                 </tr>
+                 <tr>
+                   <td>Spending tx amount (in sat)</td>
+                   <td>{{stats.chain_stats.spent_txo_sum}}</td>
+                   <td>{{stats.mempool_stats.spent_txo_sum}}</td>
+                 </tr>
+              </table>
+
+              <h3>Send funds to the multisig</h3>
+              <p>If you want you can send funds to the address <a href="https://blockstream.info/testnet/address/{{multisig_address}}" target="_blank">{{multisig_address}}</a>.</p>
+
+            </div>
+         </div>
+      </div>
+      </div>
+      <script src="/static/jquery.min.js"></script>
+      <script src="/static/bootstrap.min.js"></script>
+   </body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+     <meta charset="utf-8">
+     <meta name="description" content="btcsigner.com">
+     <meta name="author" content="Valerio Vaccaro">
+     <link rel="icon" href="">
+     <title>₿TC Signer</title>
+     <link href="/static/bootstrap.min.css" rel="stylesheet">
+     <link href="/static/local.css" rel="stylesheet">
+   </head>
+   <body>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container">
+           <div class="navbar-header">
+              <a class="navbar-brand" href="/">Home</a>
+              <a class="navbar-brand" href="/create">Create</a>
+              <a class="navbar-brand" href="/list">List</a>
+              <a class="navbar-brand" href="/sign">Sign</a>
+              <a class="navbar-brand" href="/about">Credits</a>
+           </div>
+         </div>
+      </nav>
+      <div class="container-fluid">
+         <br/><br/><br/><br/>
+         <div id="sl">
+            <br/><br/>
+            <div class="well">
+
+               <h3>Get a testnet PubKey</h3>
+               <p>Create a new address on core using the command
+                 </br><code>bitcoin-cli getnewaddress</code></p>
+               <p>Get the PubKey associated with the new address with the command
+                 </br><code>getaddressinfo "new_address"</code></br>
+                 where new_address is the address generated at the previouse step.</p><br/>
+
+               {{#form}}
+               <h3>Create a testnet 2of2 multisig address</h3>
+               <form action="/create" method="get">
+                  <div class="form-group row">
+                     <label for="address" class="col-sm-2 col-form-label">Name (useful only for this website)</label>
+                     <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" minlength="5" id="name" placeholder="name">
+                     </div> </br>
+                  </div>
+                  <div class="form-group row">
+                     <label for="address" class="col-sm-2 col-form-label">Your public key</label>
+                     <div class="col-sm-10">
+                        <input type="text" class="form-control" name="pubkey" id="pubkey" placeholder="pubkey">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                     </div>
+                  </div>
+               </form>
+               {{/form}}
+
+               {{^form}}
+
+               <h3>Created testnet 2of2 multisig address</h3>
+               <p>We create a multisig with the following command
+                 </br><code>bitcoin-cli addmultisigaddress 2 ["{{my_pubkey}}", "{{your_pubkey}}"]</code></br>
+                 where {{mypubkey}} is a PubKey associated to my node, {{yourpubkey}} is the PubKey generated from your node. You can execute the same command in order to obtain the multisig address.</p>
+               <p>Now you can import the multisign address {{multisig_address}} with the command
+                 </br><code>bitcoin-cli importaddress {{multisig_address}} "" false</code></p>
+
+               <h3>Send funds to the multisig</h3>
+               <p>If you want you can send funds to the address <a href="https://blockstream.info/testnet/address/{{multisig_address}}" target="_blank">{{multisig_address}}</a>.</p>
+
+               <h3>Check this address</h3>
+               <p>You can check multisig balance at page <a href="address?address={{multisig_address}}">{{multisig_address}}</a>.</p>
+               {{/form}}
+
+               {{status}}
+
+            </div>
+         </div>
+      </div>
+      </div>
+      <script src="/static/jquery.min.js"></script>
+      <script src="/static/bootstrap.min.js"></script>
+   </body>
+</html>
