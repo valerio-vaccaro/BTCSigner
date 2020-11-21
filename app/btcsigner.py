@@ -159,8 +159,8 @@ def address():
     }
     return render_template('address', **data)
 
-@app.route('/sign')
-def sign():
+@app.route('/new_psbt')
+def new_psbt():
     ID = 0
     status = ''
     form_1 = True
@@ -255,11 +255,50 @@ def sign():
         'form_3': form_3,
         'psbt_1': psbt_1,
         'psbt_1_base64': psbt_1_base64,
+        'signed_psbt': signed_psbt,
         'decoded_psbt': decoded_psbt,
         'testmempoolaccept': testmempoolaccept,
         'txid': txid,
     }
-    return render_template('sign', **data)
+    return render_template('new_psbt', **data)
+
+@app.route('/sign_psbt')
+def sign_psbt():
+    ID = 0
+    status = ''
+    form_1 = True
+
+    decoded_psbt = ''
+    testmempoolaccept = ''
+    txid = ''
+
+    signed_psbt = request.args.get('signed_psbt')
+
+    if signed_psbt is not None:
+        form_1 = False
+
+        # decode
+        decoded_psbt = host.call('decodepsbt', signed_psbt)
+
+        # sign
+        fully_signed_psbt = host.call('walletprocesspsbt', signed_psbt)
+
+        # finalize
+        finalized_psbt = host.call('finalizepsbt', fully_signed_psbt['psbt'])
+
+        testmempoolaccept = host.call('testmempoolaccept', [finalized_psbt['hex']])
+
+        # broadcast
+        txid = host.call('sendrawtransaction', finalized_psbt['hex'])
+
+    data = {
+        'signed_psbt': signed_psbt,
+        'form_1': form_1,
+        'decoded_psbt': decoded_psbt,
+        'testmempoolaccept': testmempoolaccept,
+        'txid': txid,
+    }
+    return render_template('sign_psbt', **data)
 
 if __name__ == '__main__':
     app.import_name = '.'

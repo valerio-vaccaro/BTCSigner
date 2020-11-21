@@ -16,7 +16,8 @@
               <a class="navbar-brand" href="/">Home</a>
               <a class="navbar-brand" href="/create">Create</a>
               <a class="navbar-brand" href="/list">List</a>
-              <a class="navbar-brand" href="/sign">Sign</a>
+              <a class="navbar-brand" href="/new_psbt">New PSBT</a>
+              <a class="navbar-brand" href="/sign_psbt">Sign PSBT</a>
               <a class="navbar-brand" href="/about">Credits</a>
            </div>
          </div>
@@ -30,10 +31,10 @@
               <h3>{{name}} - {{multisig_address}}</h3>
               <p>This address was create at {{timestamp}} from my PubKey {{my_pubkey}} and client PubKey {{your_pubkey}}.</p>
               <p>You can check this address with the command </br>
-               <code>bitcoin-cli addmultisigaddress 2 ["{{my_pubkey}}", "{{your_pubkey}}"]</code></br>
+               <pre style="white-space: normal !important;word-wrap: break-word !important; max-height: 200px;">bitcoin-cli addmultisigaddress 2 ["{{my_pubkey}}", "{{your_pubkey}}"]</pre></br>
                where {{my_pubkey}} is a PubKey associated to my node, {{your_pubkey}} is the PubKey generated with client node.</p>
               <p>You can also import the multisign address {{multisig_address}} with the command
-               </br><code>bitcoin-cli importaddress {{multisig_address}} "" false</code></p>
+              </br><pre style="white-space: normal !important;word-wrap: break-word !important; max-height: 200px;">bitcoin-cli importaddress {{multisig_address}} "" false</pre></p>
 
               <table class="table table-striped">
               <thead>

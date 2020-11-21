@@ -16,7 +16,8 @@
               <a class="navbar-brand" href="/">Home</a>
               <a class="navbar-brand" href="/create">Create</a>
               <a class="navbar-brand" href="/list">List</a>
-              <a class="navbar-brand" href="/sign">Sign</a>
+              <a class="navbar-brand" href="/new_psbt">New PSBT</a>
+              <a class="navbar-brand" href="/sign_psbt">Sign PSBT</a>
               <a class="navbar-brand" href="/about">Credits</a>
            </div>
          </div>
@@ -29,9 +30,9 @@
 
                <h3>Get a testnet PubKey</h3>
                <p>Create a new address on core using the command
-                 </br><code>bitcoin-cli getnewaddress</code></p>
+               </br><pre style="white-space: normal !important;word-wrap: break-word !important; max-height: 200px;">bitcoin-cli getnewaddress</pre></p>
                <p>Get the PubKey associated with the new address with the command
-                 </br><code>getaddressinfo "new_address"</code></br>
+               </br><pre style="white-space: normal !important;word-wrap: break-word !important; max-height: 200px;">getaddressinfo "new_address"</pre></br>
                  where new_address is the address generated at the previouse step.</p><br/>
 
                {{#form}}
@@ -61,10 +62,10 @@
 
                <h3>Created testnet 2of2 multisig address</h3>
                <p>We create a multisig with the following command
-                 </br><code>bitcoin-cli addmultisigaddress 2 ["{{my_pubkey}}", "{{your_pubkey}}"]</code></br>
+               </br><pre style="white-space: normal !important;word-wrap: break-word !important; max-height: 200px;">bitcoin-cli addmultisigaddress 2 ["{{my_pubkey}}", "{{your_pubkey}}"]</pre></br>
                  where {{mypubkey}} is a PubKey associated to my node, {{yourpubkey}} is the PubKey generated from your node. You can execute the same command in order to obtain the multisig address.</p>
                <p>Now you can import the multisign address {{multisig_address}} with the command
-                 </br><code>bitcoin-cli importaddress {{multisig_address}} "" false</code></p>
+               </br><pre style="white-space: normal !important;word-wrap: break-word !important; max-height: 200px;">bitcoin-cli importaddress {{multisig_address}} "" false</pre></p>
 
                <h3>Send funds to the multisig</h3>
                <p>If you want you can send funds to the address <a href="https://blockstream.info/testnet/address/{{multisig_address}}" target="_blank">{{multisig_address}}</a>.</p>
