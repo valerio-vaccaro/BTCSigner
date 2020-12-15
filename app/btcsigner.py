@@ -74,11 +74,14 @@ def create():
     multisig_address = ''
 
     your_pubkey = request.args.get('pubkey')
+    your_descriptor = request.args.get('descriptor')
+    descriptor = None
     name = request.args.get('name')
     if your_pubkey is not None:
         form = False
         my_address = host.call('getnewaddress')
         my_pubkey = host.call('getaddressinfo', my_address)['pubkey']
+        # TODO: check errors
         multisig_address = host.call('addmultisigaddress', 2, [my_pubkey, your_pubkey])['address']
         status = host.call('importaddress', multisig_address, '', False)
 
@@ -90,11 +93,30 @@ def create():
         mydb.commit()
         mydb.close()
 
+    if your_descriptor is not None:
+        form = False
+        my_address = host.call('getnewaddress')
+        my_pubkey = host.call('getaddressinfo', my_address)['pubkey']
+        # TODO: check errors
+        descriptor = host.call('getdescriptorinfo', f"wsh(sortedmulti(2,{my_pubkey},{your_descriptor}))")['descriptor']
+        multisig_address = host.call('deriveaddresses', descriptor)[0]
+        status = host.call('importaddress', multisig_address, '', False)
+
+        mydb = mysql.connector.connect(host=myHost, user=myUser, passwd=myPasswd, database=myDatabase)
+        mycursor = mydb.cursor()
+        sql = "INSERT IGNORE INTO addresses (Address, MyPubkey, YourPubkey, Name, IP) VALUES (%s, %s, %s, %s, %s)"
+        val = (multisig_address, my_pubkey, descriptor, name, ip)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        mydb.close()
+
     data = {
         'form': form,
         'status': status,
         'my_pubkey': my_pubkey,
         'your_pubkey': your_pubkey,
+        'your_descriptor': descriptor,
+        'descriptor': descriptor != None,
         'multisig_address': multisig_address,
     }
     return render_template('create', **data)
